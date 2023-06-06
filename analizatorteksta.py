@@ -5,7 +5,7 @@
 создать картинку - облако слов
 """
 
-class FileReader:
+class TextAnalyzer:
     def __init__(self, filename):
         self.filename = filename
 
@@ -14,5 +14,5 @@ class FileReader:
             text = file.read()
             print(text)
 
-reader = FileReader("text.txt")
+reader = TextAnalyzer("text.txt")
 reader.read_file()
