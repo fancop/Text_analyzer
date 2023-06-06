@@ -15,8 +15,7 @@ class TextAnalyzer:
         self.print_text()
 
     def open_file(self):
-        with open(self.file, mode=self.mode, encoding=self.encoding) as file:
-            self.content = file.read()
+        self.content = open("text.txt", mode="r", encoding="UTF-8")
 
     def make_text(self):
         self.text = "".join(self.content)
