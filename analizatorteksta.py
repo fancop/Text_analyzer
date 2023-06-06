@@ -24,4 +24,4 @@ class TextAnalyzer:
     def print_text(self):
         print(self.text)
 
-TextAnalyzer().print_text()
+TextAnalyzer()
