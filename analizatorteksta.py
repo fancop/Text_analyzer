@@ -6,13 +6,22 @@
 """
 
 class TextAnalyzer:
-    def __init__(self, filename):
-        self.filename = filename
+    def __init__(self, file="text.txt", mode="r", encoding="UTF-8"):
+        self.file = file
+        self.mode = mode
+        self.encoding = encoding
+        self.open_file()
+        self.make_text()
+        self.print_text()
 
-    def read_file(self):
-        with open(self.filename, "r", encoding="utf-8") as file:
-            text = file.read()
-            print(text)
+    def open_file(self):
+        with open(self.file, mode=self.mode, encoding=self.encoding) as file:
+            self.content = file.read()
 
-reader = TextAnalyzer("text.txt")
-reader.read_file()
+    def make_text(self):
+        self.text = "".join(self.content)
+
+    def print_text(self):
+        print(self.text)
+
+TextAnalyzer().print_text()
