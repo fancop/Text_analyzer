@@ -46,8 +46,6 @@ class TextAnalyzer:
                 if new_word:
                     self.words_clean.append(new_word)
         self.words_clean = list(filter(None, self.words_clean))
-        self.words_clean.append(new_word)
-        
 
     def print_text(self) -> None:
         """ Выводит строку текста на экран """
