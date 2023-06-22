@@ -1,5 +1,6 @@
 from typing import NoReturn
 from string import punctuation
+import re
 
 
 """
@@ -38,18 +39,11 @@ class TextAnalyzer:
     def prepare_text(self):
         """ Приводит текст к нижнему регистру и убирает все лишние знаки препинания """
         self.text = self.text.lower()
-        self.words_unclean = self.text.split()
-        self.words_clean = []
-        for i in range(len(self.words_unclean)):
-            for s in punctuation + "—":
-                new_word = self.words_unclean[i].replace(s, "")
-                if new_word:
-                    self.words_clean.append(new_word)
-        self.words_clean = list(filter(None, self.words_clean))
+        self.words = re.findall(r'\b[\w-]+\b', self.text)
 
     def print_text(self) -> None:
         """ Выводит строку текста на экран """
-        print(self.words_clean)
-        print(f"В этом тексте {len(self.words_clean)} слов")
+        print(self.words)
+        print(f"В этом тексте {len(self.words)} слов")
 
 TextAnalyzer()
