@@ -22,6 +22,7 @@ class TextAnalyzer:
         self.read_file()
         self.check_empty_file()
         self.prepare_text()
+        self.sorting_words()
         self.print_text()
 
     def read_file(self) -> None | NoReturn:
