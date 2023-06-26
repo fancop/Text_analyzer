@@ -1,6 +1,7 @@
 from typing import NoReturn
 from string import punctuation
 import re
+import pymorphy3
 
 
 """
@@ -11,12 +12,13 @@ import re
 """
 
 class TextAnalyzer:
-    def __init__(self, file_name="text.txt", mode="r", encoding="UTF-8") -> None:
+    def __init__(self, file_name="text.txt", mode="r", encoding="UTF-8", pos_list=["VERB", "NOUN"]) -> None:
         if file_name is None:
             raise Exception("Не указан файл для анализа!")
         self.file_name = file_name
         self.mode = mode
         self.encoding = encoding
+        self.pos_list = pos_list
         self.read_file()
         self.check_empty_file()
         self.prepare_text()
@@ -41,9 +43,18 @@ class TextAnalyzer:
         self.text = self.text.lower()
         self.words = re.findall(r'\b[\w-]+\b', self.text)
 
+    def sorting_words(self) -> list:
+        morph = pymorphy3.MorphAnalyzer()
+        self.words_by_pos = []
+
+        for word in self.words:
+            parsed_word = morph.parse(word)[0]
+            pos = parsed_word.tag.POS
+            if pos in self.pos_list:
+                self.words_by_pos.append(parsed_word.normal_form)
+
     def print_text(self) -> None:
         """ Выводит строку текста на экран """
-        print(self.words)
-        print(f"В этом тексте {len(self.words)} слов")
+        print(self.words_by_pos)
 
 TextAnalyzer()
