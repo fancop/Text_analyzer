@@ -1,7 +1,10 @@
 from typing import NoReturn
 from string import punctuation
+from collections import Counter
 import re
 import pymorphy3
+import matplotlib.pyplot as plt
+import wordcloud
 
 
 """
@@ -23,6 +26,7 @@ class TextAnalyzer:
         self.check_empty_file()
         self.prepare_text()
         self.sorting_words()
+        self.generate_wordcloud()
         self.print_text()
 
     def read_file(self) -> None | NoReturn:
@@ -54,8 +58,26 @@ class TextAnalyzer:
             if pos in self.pos_list:
                 self.words_by_pos.append(parsed_word.normal_form)
 
+        self.top_words = Counter(self.words_by_pos).most_common(10)
+
+    def generate_wordcloud(self) -> None:
+        wordcloud = wordcloud.WordCloud(width = 800, height = 800, 
+                        background_color ="white", 
+                        min_font_size = 10).generate(self.text)
+        image = wordcloud.to_image()
+        image.save("wordcloud.png")
+
+        # Отображаем получившееся облако слов
+        plt.figure(figsize = (8, 8), facecolor = None) 
+        plt.imshow(wordcloud) 
+        plt.axis("off") 
+        plt.tight_layout(pad = 0) 
+
+        plt.show()
+
     def print_text(self) -> None:
         """ Выводит строку текста на экран """
         print(self.words_by_pos)
+
 
 TextAnalyzer()
