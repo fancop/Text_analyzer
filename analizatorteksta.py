@@ -1,3 +1,4 @@
+import os
 from typing import NoReturn
 from string import punctuation
 from collections import Counter
@@ -15,18 +16,26 @@ import wordcloud as wc
 """
 
 class TextAnalyzer:
-    def __init__(self, file_name="text.txt", mode="r", encoding="UTF-8", pos_list=["VERB", "NOUN"]) -> None:
+    def __init__(self, file_name="text.txt", mode="r", encoding="UTF-8", pos_list=["VERB", "NOUN"],
+                 wordcloud_width=800, wordcloud_height=800, wordcloud_background_color="white",
+                 wordcloud_min_font_size=10) -> None:
         if file_name is None:
             raise Exception("Не указан файл для анализа!")
         self.file_name = file_name
         self.mode = mode
         self.encoding = encoding
         self.pos_list = pos_list
+        self.wordcloud_width = wordcloud_width
+        self.wordcloud_height = wordcloud_height
+        self.wordcloud_background_color = wordcloud_background_color
+        self.wordcloud_min_font_size = wordcloud_min_font_size
         self.read_file()
         self.check_empty_file()
         self.prepare_text()
         self.sorting_words()
         self.generate_wordcloud()
+        self.save_wordcloud_image()
+        self.display_wordcloud()
         self.print_text()
 
     def read_file(self) -> None | NoReturn:
@@ -61,13 +70,23 @@ class TextAnalyzer:
         self.top_words = Counter(self.words_by_pos).most_common(10)
 
     def generate_wordcloud(self) -> None:
-        wordcloud_image = wc.WordCloud(width=800, height=800,
-                                       background_color="white",
-                                       min_font_size=10).generate(self.text)
+        wordcloud_image = wc.WordCloud(width=self.wordcloud_width, height=self.wordcloud_height,
+                                       background_color=self.wordcloud_background_color,
+                                       min_font_size=self.wordcloud_min_font_size).generate(self.top_words)
         image = wordcloud_image.to_image()
+
+        self.save_wordcloud_image(image)
+        self.display_wordcloud(wordcloud_image)
+
+    def save_wordcloud_image(self, image):
+        """ Сохраняет облако слов в файл wordcloud.png """
+        if not os.access(os.path.dirname(os.path.abspath(__file__)), os.W_OK):
+            raise Exception("Ошибка: не удается записать wordcloud.png")
+
         image.save("wordcloud.png")
 
-        # Отображаем получившееся облако слов
+    def display_wordcloud(self, wordcloud_image):
+        """ Отображает облако слов """
         plt.figure(figsize=(8, 8), facecolor=None)
         plt.imshow(wordcloud_image)
         plt.axis("off")
