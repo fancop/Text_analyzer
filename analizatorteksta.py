@@ -4,7 +4,7 @@ from collections import Counter
 import re
 import pymorphy3
 import matplotlib.pyplot as plt
-import wordcloud
+import wordcloud as wc
 
 
 """
@@ -61,18 +61,17 @@ class TextAnalyzer:
         self.top_words = Counter(self.words_by_pos).most_common(10)
 
     def generate_wordcloud(self) -> None:
-        wordcloud = wordcloud.WordCloud(width = 800, height = 800, 
-                        background_color ="white", 
-                        min_font_size = 10).generate(self.text)
-        image = wordcloud.to_image()
+        wordcloud_image = wc.WordCloud(width=800, height=800,
+                                       background_color="white",
+                                       min_font_size=10).generate(self.text)
+        image = wordcloud_image.to_image()
         image.save("wordcloud.png")
 
         # Отображаем получившееся облако слов
-        plt.figure(figsize = (8, 8), facecolor = None) 
-        plt.imshow(wordcloud) 
-        plt.axis("off") 
-        plt.tight_layout(pad = 0) 
-
+        plt.figure(figsize=(8, 8), facecolor=None)
+        plt.imshow(wordcloud_image)
+        plt.axis("off")
+        plt.tight_layout(pad=0)
         plt.show()
 
     def print_text(self) -> None:
