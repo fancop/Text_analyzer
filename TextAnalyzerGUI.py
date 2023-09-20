@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import colorchooser, filedialog
 import TextAnalyzer
 
-color = ""  # Variable to store the selected color
+color = ""  
 file_path = ""
 
 def show_color_picker():
@@ -10,6 +10,8 @@ def show_color_picker():
     color = colorchooser.askcolor(title="Выберите цвет")
     if color[1]:
         print("Выбранный цвет:", color[1])
+    else:
+        print("Цвет не выбран!")
 
 def select_file():
     global file_path
@@ -23,6 +25,8 @@ def run():
         pos_list.append("NOUN")
     if verb_var.get():
         pos_list.append("VERB")
+    if adjective_var.get():
+        pos_list.append("ADJECTIVE")
     
     TextAnalyzer.TextAnalyzer(
         file_name=file_path,
@@ -35,10 +39,12 @@ def run():
 
 window = tk.Tk()
 label = tk.Label(window, text="Сколько слов должно быть", font=("Bahnschrift", 19))
-noun_var = tk.BooleanVar()  # Variable to store the state of Noun checkbox
-verb_var = tk.BooleanVar()  # Variable to store the state of Verb checkbox
+noun_var = tk.BooleanVar()
+verb_var = tk.BooleanVar()
+adjective_var = tk.BooleanVar()
 cb_noun = tk.Checkbutton(window, text="Включить Существительные", font=("Bahnschrift", 19), variable=noun_var)
 cb_verb = tk.Checkbutton(window, text="Включить Глаголы", font=("Bahnschrift", 19), variable=verb_var)
+cd_adjective = tk.Checkbutton(window, text="Включить прилагательные", font=("Bahnschrift", 19), variable=adjective_var)
 label2 = tk.Label(window, text="Ширина:", font=("Bahnschrift", 19))
 label3 = tk.Label(window, text="Высота:", font=("Bahnschrift", 19))
 button = tk.Button(window, font=("Bahnschrift", 17), text="сделать вордклауд", command=run)
@@ -57,7 +63,8 @@ label2.pack(anchor="nw", padx=6, pady=6)
 entry2.pack(anchor="nw", padx=6, pady=6)
 label3.pack(anchor="nw", padx=6, pady=6)
 entry3.pack(anchor="nw", padx=6, pady=6)
-cb_noun.pack(anchor="nw", padx=6, pady=6)  # Display Noun checkbox
-cb_verb.pack(anchor="nw", padx=6, pady=6)  # Display Verb checkbox
+cb_noun.pack(anchor="nw", padx=6, pady=6)  
+cb_verb.pack(anchor="nw", padx=6, pady=6)  
+cd_adjective.pack(anchor="nw", padx=6, pady=6)
 
 window.mainloop()
