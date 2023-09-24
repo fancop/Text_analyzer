@@ -67,12 +67,16 @@ def run():
     
 
     # Создание прогрессбара
-    progress_bar = ttk.Progressbar(window, mode='indeterminate')
+    progress_bar = ttk.Progressbar(window, mode='determinate', maximum=100)
     progress_bar.grid(row=0, column=0, columnspan=2, sticky='we', padx=6, pady=6)
 
     # Запуск прогрессбара в отдельном потоке
     def run_progress_bar():
         progress_bar.start()
+        for i in range(101):
+            progress_bar['value'] = i
+            window.update_idletasks()
+            time.sleep(0.15)
         TextAnalyzer.TextAnalyzer(
             file_name=file_path,
             pos_list=pos_list,
