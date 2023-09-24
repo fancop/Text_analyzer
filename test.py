@@ -2,6 +2,9 @@ import tkinter as tk
 from tkinter import colorchooser, filedialog
 import TextAnalyzer
 import tkinter.messagebox as messagebox
+import threading
+import time
+import tkinter.ttk as ttk
 
 
 color = ""  
@@ -62,14 +65,26 @@ def run():
         messagebox.showerror("Ошибка", "Не выбрана ни одна часть речи!")
         return
     
-    TextAnalyzer.TextAnalyzer(
-        file_name=file_path,
-        pos_list=pos_list,
-        num=int(entry.get()),
-        background=color[1],
-        width=int(entry2.get()),
-        height=int(entry3.get())
-    )
+
+    # Создание прогрессбара
+    progress_bar = ttk.Progressbar(window, mode='indeterminate')
+    progress_bar.grid(row=0, column=0, columnspan=2, sticky='we', padx=6, pady=6)
+
+    # Запуск прогрессбара в отдельном потоке
+    def run_progress_bar():
+        progress_bar.start()
+        TextAnalyzer.TextAnalyzer(
+            file_name=file_path,
+            pos_list=pos_list,
+            num=int(entry.get()),
+            background=color[1],
+            width=int(entry2.get()),
+            height=int(entry3.get())
+        )
+        progress_bar.stop()
+        progress_bar.grid_forget()
+
+    threading.Thread(target=run_progress_bar).start()
 
 window = tk.Tk()
 label = tk.Label(window, text="Сколько слов должно быть", font=("Bahnschrift", 19))

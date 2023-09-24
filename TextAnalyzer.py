@@ -97,5 +97,5 @@ class TextAnalyzer:
 
         self.wordcloud = WordCloud(width=self.width, height=self.height, background_color=self.background_color).generate_from_frequencies(dict(top_10_words))
         image = self.wordcloud.to_image()
-        image.save('C:/Users/DDt/Desktop/wordcloud.png')
+        image.save('C:/Users/fanco/OneDrive/Рабочий стол/wordcloud.png')
         print("Облако слов сохранено в файл 'wordcloud.png'")
